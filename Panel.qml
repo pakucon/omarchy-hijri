@@ -382,9 +382,9 @@ Panel {
             height: Style.space(22)
 
             PanelActionButton {
-              anchors.horizontalCenter: parent.horizontalCenter
+              anchors.right: parent.right
               anchors.verticalCenter: parent.verticalCenter
-              iconText: "󰛟"
+              iconText: "󰁓"
               tooltipText: root.labels[root.language].settings
               foreground: root.showSettings ? Color.accent : root.contentForeground
               fontFamily: root.contentFontFamily
