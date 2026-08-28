@@ -143,8 +143,12 @@ Panel {
   onOffsetChanged: root.today = root.effectiveDate(clock.date)
   onLanguageChanged: rebuild()
 
-  readonly property bool _openMirror: root.open
-  on_OpenMirrorChanged: if (!_openMirror) root.showSettings = false
+  Binding {
+    target: root
+    property: "showSettings"
+    value: false
+    when: !root.open
+  }
 
   function setLanguage(lang) {
     root.language = lang;
