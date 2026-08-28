@@ -5,6 +5,8 @@ Hijri calendar when clicked. The popup mimics the built-in `omarchy.clock`
 plugin: a large date hero, a 6×7 grid with today outlined, and month
 navigation via chevrons / arrow keys / scroll wheel.
 
+![Hijri Calendar popup](screenshot.png)
+
 ## Features
 - In the bar: `15 Rab. Awal 1448 H` (today's date, refreshed automatically
   every minute / at midnight).
