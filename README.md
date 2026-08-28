@@ -1,40 +1,44 @@
 # Hijri Calendar (jp.hijri)
 
-Widget bar Omarchy yang menampilkan tanggal Hijriyah hari ini, dan membuka
-kalender satu bulan Hijriyah saat diklik. Tampilan popup meniru plugin
-bawaan `omarchy.clock`: hero tanggal besar, grid 6×7 dengan hari ini
-di-outline, dan navigasi bulan via chevron / panah keyboard / scroll wheel.
+An Omarchy bar widget that shows today's Hijri date and opens a one-month
+Hijri calendar when clicked. The popup mimics the built-in `omarchy.clock`
+plugin: a large date hero, a 6×7 grid with today outlined, and month
+navigation via chevrons / arrow keys / scroll wheel.
 
-## Fitur
-- Di bar: `15 Rab. Awal 1448 H` (hari ini, diperbarui otomatis tiap menit /
-  saat tengah malam).
-- Klik widget: popup kalender grid 6×7 untuk bulan Hijriyah yang sedang
-  ditampilkan, dengan hari ini diberi garis tepi.
-- Hero tanggal besar (klik untuk kembali ke bulan ini), navigasi ⟨ ⟩, panah
-  kiri/kanan, `[` `]` bulan, `{` `}` tahun, `t` hari ini, scroll wheel,
-  `Esc` menutup.
-- Minggu dimulai Senin.
+## Features
+- In the bar: `15 Rab. Awal 1448 H` (today's date, refreshed automatically
+  every minute / at midnight).
+- Click the widget: a 6×7 grid calendar for the displayed Hijri month, with
+  today outlined.
+- Large date hero (click to return to the current month), ⟨ ⟩ chevrons,
+  left/right arrows, `[` `]` for month, `{` `}` for year, `t` for today,
+  scroll wheel, and `Esc` to close.
+- Week starts on Monday.
+- Settings (gear button below the month selector): choose the interface
+  language (**Indonesia** / **English** / **Arabic**) and adjust the date by
+  ±days (clamped to −3..+3) to match your local moon-sighting. Settings are
+  persisted across restarts.
 
-## Catatan kalender
-Konversi menggunakan kalender Islam tabular (algoritma aritmetis Reingold &
-Dershowitz, "Calendrical Calculations") — deterministik dan tanpa dependensi
-eksternal. Ini dapat berbeda **maksimal 1 hari** dari kalender berbasis
-rukyat hilal / Umm al-Qura.
+## Calendar note
+The conversion uses the tabular Islamic calendar (the arithmetical algorithm
+from Reingold & Dershowitz, "Calendrical Calculations") — deterministic and
+with no external dependencies. It can differ by **at most 1 day** from
+hilal-observation based calendars such as Umm al-Qura.
 
-## Instal
+## Install
 ```sh
 omarchy plugin add https://github.com/pakucon/omarchy-hijri.git --enable
 ```
 
-## Pindah / nonaktifkan
+## Move / disable
 ```sh
-omarchy bar move jp.hijri --section right        # atau left / center
+omarchy bar move jp.hijri --section right        # or left / center
 omarchy plugin disable jp.hijri
 omarchy plugin remove jp.hijri
 ```
 
 ## Files
-- `manifest.json` — kontrak plugin
-- `BarWidget.qml` — label bar + host popup
-- `Panel.qml` — grid kalender
-- `Hijri.js` — konversi Gregorian ↔ Hijriyah
+- `manifest.json` — plugin contract
+- `BarWidget.qml` — bar label + popup host
+- `Panel.qml` — calendar grid + settings
+- `Hijri.js` — Gregorian ↔ Hijri conversion
