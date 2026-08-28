@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "jp.hijri",
+  "name": "Hijri Calendar",
+  "version": "1.0.0",
+  "author": "Jusron Permana",
+  "license": "MIT",
+  "description": "Shows today's Hijri date in the Omarchy bar and a one-month Hijri calendar when clicked.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Hijri Calendar",
+    "category": "Time",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
