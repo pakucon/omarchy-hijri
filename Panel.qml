@@ -147,7 +147,7 @@ Panel {
     target: root
     property: "showSettings"
     value: false
-    when: !root.open
+    when: !root.opened
   }
 
   function setLanguage(lang) {
