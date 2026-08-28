@@ -142,6 +142,7 @@ Panel {
   onTodayHChanged: rebuild()
   onOffsetChanged: root.today = root.effectiveDate(clock.date)
   onLanguageChanged: rebuild()
+  onOpenChanged: if (!root.open) root.showSettings = false
 
   function setLanguage(lang) {
     root.language = lang;
@@ -384,7 +385,7 @@ Panel {
             PanelActionButton {
               anchors.right: parent.right
               anchors.verticalCenter: parent.verticalCenter
-              iconText: "󰁓"
+              iconText: "󰒓"
               tooltipText: root.labels[root.language].settings
               foreground: root.showSettings ? Color.accent : root.contentForeground
               fontFamily: root.contentFontFamily
