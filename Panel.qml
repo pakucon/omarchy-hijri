@@ -20,7 +20,7 @@ Panel {
     return new Date(base.getTime() + root.offset * 86400000);
   }
 
-  property var today: effectiveDate(new Date())
+  property var today: effectiveDate(clock ? clock.date : new Date())
   readonly property var todayH: Hijri.hijriFromDate(today)
 
   property int viewYear: todayH.y
@@ -108,7 +108,6 @@ Panel {
   }
 
   function refresh() {
-    root.today = new Date();
     root.goToToday();
   }
   function goToToday() {
@@ -134,16 +133,13 @@ Panel {
     onDateChanged: {
       var h = Hijri.hijriFromDate(root.effectiveDate(clock.date));
       if (h.y === todayH.y && h.m === todayH.m && h.d === todayH.d) return;
-      var follow = root.viewingCurrentMonth;
-      root.today = root.effectiveDate(clock.date);
-      if (follow) root.goToToday();
+      if (root.viewingCurrentMonth) root.goToToday();
     }
   }
 
   onViewYearChanged: rebuild()
   onViewMonthChanged: rebuild()
   onTodayHChanged: rebuild()
-  onOffsetChanged: root.today = root.effectiveDate(clock.date)
   onLanguageChanged: rebuild()
 
   Binding {
