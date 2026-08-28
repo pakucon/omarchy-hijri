@@ -23,7 +23,7 @@ rukyat hilal / Umm al-Qura.
 
 ## Instal
 ```sh
-omarchy plugin add https://github.com/<username>/omarchy-hijri.git --enable
+omarchy plugin add https://github.com/pakucon/omarchy-hijri.git --enable
 ```
 
 ## Pindah / nonaktifkan
