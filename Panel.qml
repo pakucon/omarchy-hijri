@@ -254,16 +254,6 @@ Panel {
                 fontFamily: root.contentFontFamily
               }
             }
-
-            PanelActionButton {
-              anchors.right: parent.right
-              anchors.verticalCenter: parent.verticalCenter
-              iconText: "󰛟"
-              tooltipText: root.labels[root.language].settings
-              foreground: root.contentForeground
-              fontFamily: root.contentFontFamily
-              onClicked: root.showSettings = !root.showSettings
-            }
           }
 
           // ---- Month grid: weekday header, then the 6x7 day grid.
@@ -383,6 +373,22 @@ Panel {
                 fontFamily: root.contentFontFamily
                 onClicked: root.moveMonth(1)
               }
+            }
+          }
+
+          // ---- Settings toggle, below the month selector.
+          Item {
+            width: parent.width
+            height: Style.space(22)
+
+            PanelActionButton {
+              anchors.horizontalCenter: parent.horizontalCenter
+              anchors.verticalCenter: parent.verticalCenter
+              iconText: "󰛟"
+              tooltipText: root.labels[root.language].settings
+              foreground: root.showSettings ? Color.accent : root.contentForeground
+              fontFamily: root.contentFontFamily
+              onClicked: root.showSettings = !root.showSettings
             }
           }
 
