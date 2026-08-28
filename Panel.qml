@@ -16,7 +16,11 @@ Panel {
   property var hostWidget: null
   readonly property var barIdentity: hostWidget || root
 
-  property var today: new Date()
+  function effectiveDate(base) {
+    return new Date(base.getTime() + root.offset * 86400000);
+  }
+
+  property var today: effectiveDate(new Date())
   readonly property var todayH: Hijri.hijriFromDate(today)
 
   property int viewYear: todayH.y
@@ -31,7 +35,28 @@ Panel {
   readonly property int cellHeight: Style.space(40)
   readonly property int cellSpacing: Style.space(2)
 
-  readonly property var weekdayLabels: ["SEN", "SEL", "RAB", "KAM", "JUM", "SAB", "MIN"]
+  // ---- Localization.
+  readonly property var weekdays: ({
+    id: ["SEN", "SEL", "RAB", "KAM", "JUM", "SAB", "MIN"],
+    en: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+  })
+  readonly property var months: ({
+    id: ["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"],
+    en: ["Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"]
+  })
+  readonly property var labels: ({
+    id: { language: "Bahasa", indonesia: "Indonesia", inggris: "Inggris", dateAdj: "Penyesuaian tanggal", days: "hari", settings: "Pengaturan" },
+    en: { language: "Language", indonesia: "Indonesian", inggris: "English", dateAdj: "Date adjustment", days: "days", settings: "Settings" }
+  })
+
+  // ---- Persisted settings (saved into the widget entry via updateEntryInline).
+  property var settings: ({})
+  property string language: setting("language", "id")
+  property int offset: setting("offset", 0)
+
+  readonly property var weekdayLabels: root.weekdays[root.language]
+
+  property bool showSettings: false
 
   // 42 cells (6 rows x 7 columns), each { day, today }.
   property var cells: []
@@ -104,10 +129,10 @@ Panel {
     id: clock
     precision: SystemClock.Minutes
     onDateChanged: {
-      var h = Hijri.hijriFromDate(clock.date);
+      var h = Hijri.hijriFromDate(root.effectiveDate(clock.date));
       if (h.y === todayH.y && h.m === todayH.m && h.d === todayH.d) return;
       var follow = root.viewingCurrentMonth;
-      root.today = clock.date;
+      root.today = root.effectiveDate(clock.date);
       if (follow) root.goToToday();
     }
   }
@@ -115,6 +140,27 @@ Panel {
   onViewYearChanged: rebuild()
   onViewMonthChanged: rebuild()
   onTodayHChanged: rebuild()
+  onOffsetChanged: root.today = root.effectiveDate(clock.date)
+  onLanguageChanged: rebuild()
+
+  function setLanguage(lang) {
+    root.language = lang;
+    root.persistSettings({});
+  }
+  function changeOffset(delta) {
+    var v = Math.max(-3, Math.min(3, root.offset + delta));
+    root.offset = v;
+    root.persistSettings({});
+  }
+  function persistSettings(values) {
+    var entry = { id: root.moduleName };
+    entry["language"] = root.language;
+    entry["offset"] = root.offset;
+    for (var k in values) entry[k] = values[k];
+    root.settings = entry;
+    if (root.bar && root.bar.shell && typeof root.bar.shell.updateEntryInline === "function")
+      root.bar.shell.updateEntryInline(root.moduleName, entry);
+  }
 
   KeyboardPanel {
     id: panel
@@ -181,7 +227,7 @@ Panel {
 
               Text {
                 id: heroDate
-                text: root.todayH.d + " " + Hijri.MONTHS_ID[root.todayH.m - 1]
+                text: root.todayH.d + " " + root.months[root.language][root.todayH.m - 1]
                 color: heroMouse.containsMouse
                   ? Style.hoverStateColor(root.contentForeground, Color.accent)
                   : root.contentForeground
@@ -207,6 +253,16 @@ Panel {
                 text: "Kembali ke hari ini"
                 fontFamily: root.contentFontFamily
               }
+            }
+
+            PanelActionButton {
+              anchors.right: parent.right
+              anchors.verticalCenter: parent.verticalCenter
+              iconText: "󰛟"
+              tooltipText: root.labels[root.language].settings
+              foreground: root.contentForeground
+              fontFamily: root.contentFontFamily
+              onClicked: root.showSettings = !root.showSettings
             }
           }
 
@@ -300,7 +356,7 @@ Panel {
                 anchors.verticalCenter: parent.verticalCenter
                 width: gridColumn.width
                 horizontalAlignment: Text.AlignHCenter
-                text: Hijri.MONTHS_ID[root.viewMonth - 1].toUpperCase() + " " + root.viewYear + " H"
+                text: root.months[root.language][root.viewMonth - 1].toUpperCase() + " " + root.viewYear + " H"
                 color: Qt.darker(root.contentForeground, 1.4)
                 font.family: root.contentFontFamily
                 font.pixelSize: Style.font.body
@@ -317,7 +373,6 @@ Panel {
                 fontFamily: root.contentFontFamily
                 onClicked: root.moveMonth(-1)
               }
-
               PanelActionButton {
                 anchors.right: parent.right
                 anchors.rightMargin: -Style.space(8)
@@ -330,6 +385,101 @@ Panel {
               }
             }
           }
+
+          // ---- Settings (expands the popup downward).
+          Item {
+            visible: root.showSettings
+            width: parent.width
+            height: settingsColumn.height + Style.space(6)
+
+            Column {
+              id: settingsColumn
+              y: Style.space(6)
+              width: parent.width
+              spacing: Style.space(12)
+
+              PanelSeparator { width: parent.width }
+
+              Row {
+                width: parent.width
+                spacing: Style.space(10)
+
+                Text {
+                  anchors.verticalCenter: parent.verticalCenter
+                  text: root.labels[root.language].language
+                  color: root.contentForeground
+                  font.family: root.contentFontFamily
+                  font.pixelSize: Style.font.body
+                  font.bold: true
+                }
+
+                Item { width: Style.space(8); height: 1 }
+
+                PanelActionButton {
+                  anchors.verticalCenter: parent.verticalCenter
+                  iconText: "ID"
+                  tooltipText: root.labels[root.language].indonesia
+                  foreground: root.language === "id" ? Color.accent : root.contentForeground
+                  fontFamily: root.contentFontFamily
+                  onClicked: root.setLanguage("id")
+                }
+
+                PanelActionButton {
+                  anchors.verticalCenter: parent.verticalCenter
+                  iconText: "EN"
+                  tooltipText: root.labels[root.language].inggris
+                  foreground: root.language === "en" ? Color.accent : root.contentForeground
+                  fontFamily: root.contentFontFamily
+                  onClicked: root.setLanguage("en")
+                }
+              }
+
+              Row {
+                width: parent.width
+                spacing: Style.space(10)
+
+                Text {
+                  anchors.verticalCenter: parent.verticalCenter
+                  text: root.labels[root.language].dateAdj
+                  color: root.contentForeground
+                  font.family: root.contentFontFamily
+                  font.pixelSize: Style.font.body
+                  font.bold: true
+                }
+
+                Item { width: Style.space(8); height: 1 }
+
+                PanelActionButton {
+                  anchors.verticalCenter: parent.verticalCenter
+                  iconText: "-"
+                  tooltipText: "-1"
+                  foreground: root.contentForeground
+                  fontFamily: root.contentFontFamily
+                  onClicked: root.changeOffset(-1)
+                }
+
+                Text {
+                  anchors.verticalCenter: parent.verticalCenter
+                  width: Style.space(72)
+                  horizontalAlignment: Text.AlignHCenter
+                  text: (root.offset > 0 ? "+" : "") + root.offset + " " + root.labels[root.language].days
+                  color: root.contentForeground
+                  font.family: root.contentFontFamily
+                  font.pixelSize: Style.font.body
+                }
+
+                PanelActionButton {
+                  anchors.verticalCenter: parent.verticalCenter
+                  iconText: "+"
+                  tooltipText: "+1"
+                  foreground: root.contentForeground
+                  fontFamily: root.contentFontFamily
+                  onClicked: root.changeOffset(1)
+                }
+              }
+            }
+          }
+
         }
       }
     }

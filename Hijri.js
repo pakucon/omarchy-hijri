@@ -73,3 +73,10 @@ var MONTHS_SHORT_ID = [
   "Jum. Awal", "Jum. Akhir", "Rajab", "Sya'ban",
   "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
 ];
+
+// Shorter English forms for the bar label.
+var MONTHS_SHORT_EN = [
+  "Muh", "Saf", "Rab. I", "Rab. II",
+  "Jum. I", "Jum. II", "Raj", "Sha'ban",
+  "Ramadan", "Shawwal", "Dhu-Qi'd", "Dhu-Hij"
+];
