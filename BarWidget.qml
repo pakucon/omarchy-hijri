@@ -58,8 +58,12 @@ BarWidget {
     var off = root.settings.offset || 0
     var d = new Date(clock.date.getTime() + off * 86400000)
     var t = Hijri.hijriFromDate(d)
-    var names = lang === "en" ? Hijri.MONTHS_SHORT_EN : Hijri.MONTHS_SHORT_ID
-    return t.d + " " + names[t.m - 1] + " " + t.y + " H"
+    var names
+    if (lang === "en") names = Hijri.MONTHS_SHORT_EN
+    else if (lang === "ar") names = Hijri.MONTHS_SHORT_AR
+    else names = Hijri.MONTHS_SHORT_ID
+    var suffix = lang === "ar" ? "هـ" : "H"
+    return t.d + " " + names[t.m - 1] + " " + t.y + " " + suffix
   }
 
   property string displayLabel: root.label()

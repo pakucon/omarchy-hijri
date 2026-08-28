@@ -38,15 +38,18 @@ Panel {
   // ---- Localization.
   readonly property var weekdays: ({
     id: ["SEN", "SEL", "RAB", "KAM", "JUM", "SAB", "MIN"],
-    en: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    en: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+    ar: ["اثن", "ثلا", "أرب", "خمي", "جمع", "سبت", "أحد"]
   })
   readonly property var months: ({
     id: ["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"],
-    en: ["Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"]
+    en: ["Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"],
+    ar: ["محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"]
   })
   readonly property var labels: ({
-    id: { language: "Bahasa", indonesia: "Indonesia", inggris: "Inggris", dateAdj: "Penyesuaian tanggal", days: "hari", settings: "Pengaturan" },
-    en: { language: "Language", indonesia: "Indonesian", inggris: "English", dateAdj: "Date adjustment", days: "days", settings: "Settings" }
+    id: { language: "Bahasa", indonesia: "Indonesia", inggris: "Inggris", arab: "Arab", dateAdj: "Penyesuaian tanggal", days: "hari", settings: "Pengaturan" },
+    en: { language: "Language", indonesia: "Indonesian", inggris: "English", arab: "Arabic", dateAdj: "Date adjustment", days: "days", settings: "Settings" },
+    ar: { language: "اللغة", indonesia: "إندونيسي", inggris: "إنجليزي", arab: "عربي", dateAdj: "تعديل التاريخ", days: "أيام", settings: "الإعدادات" }
   })
 
   // ---- Persisted settings (saved into the widget entry via updateEntryInline).
@@ -444,6 +447,15 @@ Panel {
                   foreground: root.language === "en" ? Color.accent : root.contentForeground
                   fontFamily: root.contentFontFamily
                   onClicked: root.setLanguage("en")
+                }
+
+                PanelActionButton {
+                  anchors.verticalCenter: parent.verticalCenter
+                  iconText: "AR"
+                  tooltipText: root.labels[root.language].arab
+                  foreground: root.language === "ar" ? Color.accent : root.contentForeground
+                  fontFamily: root.contentFontFamily
+                  onClicked: root.setLanguage("ar")
                 }
               }
 

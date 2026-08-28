@@ -80,3 +80,10 @@ var MONTHS_SHORT_EN = [
   "Jum. I", "Jum. II", "Raj", "Sha'ban",
   "Ramadan", "Shawwal", "Dhu-Qi'd", "Dhu-Hij"
 ];
+
+// Shorter Arabic forms for the bar label.
+var MONTHS_SHORT_AR = [
+  "محر", "صفر", "رب١", "رب٢",
+  "جم١", "جم٢", "رجب", "شعب",
+  "رمض", "شوال", "ذوق", "ذوح"
+];
