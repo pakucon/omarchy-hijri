@@ -15,7 +15,7 @@ navigation via chevrons / arrow keys / scroll wheel.
 - Large date hero (click to return to the current month), ⟨ ⟩ chevrons,
   left/right arrows, `[` `]` for month, `{` `}` for year, `t` for today,
   scroll wheel, and `Esc` to close.
-- Week starts on Monday.
+- Week starts on Sunday.
 - Settings (gear button below the month selector): choose the interface
   language (**Indonesia** / **English** / **Arabic**) and adjust the date by
   ±days (clamped to −3..+3) to match your local moon-sighting. Settings are

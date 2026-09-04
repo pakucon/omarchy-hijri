@@ -65,7 +65,7 @@ Panel {
   property var cells: []
 
   function rebuild() {
-    var lead = Hijri.dayOfWeek(viewYear, viewMonth, 1); // 0 = Monday
+    var lead = Hijri.dayOfWeek(viewYear, viewMonth, 1); // 0 = Sunday
     var len = Hijri.monthLength(viewYear, viewMonth);
     var arr = [];
     for (var i = 0; i < lead; i++) arr.push({ day: -1, today: false });
