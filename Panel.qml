@@ -37,9 +37,9 @@ Panel {
 
   // ---- Localization.
   readonly property var weekdays: ({
-    id: ["SEN", "SEL", "RAB", "KAM", "JUM", "SAB", "MIN"],
-    en: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
-    ar: ["اثن", "ثلا", "أرب", "خمي", "جمع", "سبت", "أحد"]
+    id: ["MIN", "SEN", "SEL", "RAB", "KAM", "JUM", "SAB"],
+    en: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+    ar: ["أحد", "اثن", "ثلا", "أرب", "خمي", "جمع", "سبت"]
   })
   readonly property var months: ({
     id: ["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"],

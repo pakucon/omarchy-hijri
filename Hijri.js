@@ -46,10 +46,10 @@ function monthLength(y, m) {
   return fixedFromIslamic(y, m + 1, 1) - fixedFromIslamic(y, m, 1);
 }
 
-// Weekday of a Hijri date: 0 = Monday ... 6 = Sunday (Rata Die 1 = Monday).
+// Weekday of a Hijri date: 0 = Sunday ... 6 = Saturday (Rata Die 1 = Monday).
 function dayOfWeek(y, m, d) {
   var fixed = fixedFromIslamic(y, m, d);
-  return ((fixed - 1) % 7 + 7) % 7;
+  return ((fixed) % 7 + 7) % 7;
 }
 
 // Step a (year, month) pair by delta months, wrapping at year boundaries.
